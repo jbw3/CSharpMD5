@@ -26,14 +26,18 @@ namespace md5
             };
 
             MD5 systemHasher = MD5.Create();
+            CustomMD5 customHasher = new CustomMD5();
 
             foreach (string str in testStrings)
             {
                 byte[] input = Encoding.ASCII.GetBytes(str);
 
                 byte[] systemHash = systemHasher.ComputeHash(input);
+                byte[] customHash = customHasher.ComputeHash(input);
 
                 PrintBytes(systemHash);
+                Console.Write("  ");
+                PrintBytes(customHash);
                 Console.WriteLine();
             }
         }
