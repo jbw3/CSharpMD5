@@ -2,6 +2,8 @@ using System;
 
 public class CustomMD5
 {
+    private const int ChunkSize = 64;
+
     // s specifies the per-round shift amounts
     private readonly UInt32[] S =
     {
@@ -34,10 +36,10 @@ public class CustomMD5
 
     private byte[] PadInput(byte[] buffer)
     {
-        long padding = buffer.LongLength % 64;
+        long padding = ChunkSize - (buffer.LongLength % ChunkSize);
         if (padding == 0)
         {
-            padding = 64;
+            padding = ChunkSize;
         }
 
         long padLen = buffer.LongLength + padding;
@@ -84,7 +86,7 @@ public class CustomMD5
         UInt32 c0 = 0x98badcfe;
         UInt32 d0 = 0x10325476;
 
-        for (int chunkIdx = 0; chunkIdx < paddedInput.Length; chunkIdx += 16)
+        for (int chunkIdx = 0; chunkIdx < paddedInput.Length; chunkIdx += ChunkSize)
         {
             UInt32[] m = GetChunkWords(paddedInput, chunkIdx);
 
