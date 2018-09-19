@@ -46,13 +46,13 @@ public class CustomMD5
         byte[] paddedInput = new byte[padLen];
         buffer.CopyTo(paddedInput, 0);
 
-        paddedInput[buffer.LongLength] = 0x10;
+        paddedInput[buffer.LongLength] = 0x80;
         for (int i = 0; i < padding - sizeof(UInt64) - 1; ++i)
         {
             paddedInput[buffer.LongLength + 1 + i] = 0;
         }
 
-        byte[] lenBytes = BitConverter.GetBytes(buffer.LongLength);
+        byte[] lenBytes = BitConverter.GetBytes(buffer.LongLength * 8);
         lenBytes.CopyTo(paddedInput, paddedInput.LongLength - sizeof(UInt64));
 
         return paddedInput;

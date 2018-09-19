@@ -7,7 +7,7 @@ namespace md5
 {
     class Program
     {
-        static void PrintBytes(byte[] bytes)
+        public static void PrintBytes(byte[] bytes)
         {
             for (int i = 0; i < bytes.Length; ++i)
             {
@@ -20,9 +20,11 @@ namespace md5
             List<string> testStrings = new List<string>
             {
                 "",
-                "Hello world!",
+                "Hello World!",
                 "The quick brown fox jumps over the lazy dog",
                 "The quick brown fox jumps over the lazy dog.",
+                // 200
+                "01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789",
             };
 
             MD5 systemHasher = MD5.Create();
