@@ -36,24 +36,25 @@ public class CustomMD5
 
     private byte[] PadInput(byte[] buffer)
     {
-        long padding = ChunkSize - (buffer.LongLength % ChunkSize);
-        if (padding == 0)
+        long sizePadding = sizeof(UInt64);
+        long varPadding = ChunkSize - ((buffer.LongLength + sizePadding) % ChunkSize);
+        if (varPadding == 0)
         {
-            padding = ChunkSize;
+            varPadding = ChunkSize - sizePadding;
         }
 
-        long padLen = buffer.LongLength + padding;
+        long padLen = buffer.LongLength + varPadding + sizePadding;
         byte[] paddedInput = new byte[padLen];
         buffer.CopyTo(paddedInput, 0);
 
         paddedInput[buffer.LongLength] = 0x80;
-        for (int i = 0; i < padding - sizeof(UInt64) - 1; ++i)
+        for (long i = buffer.LongLength + 1; i < paddedInput.LongLength - sizePadding; ++i)
         {
-            paddedInput[buffer.LongLength + 1 + i] = 0;
+            paddedInput[i] = 0;
         }
 
         byte[] lenBytes = BitConverter.GetBytes(buffer.LongLength * 8);
-        lenBytes.CopyTo(paddedInput, paddedInput.LongLength - sizeof(UInt64));
+        lenBytes.CopyTo(paddedInput, paddedInput.LongLength - sizePadding);
 
         return paddedInput;
     }
